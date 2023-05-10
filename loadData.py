@@ -23,11 +23,11 @@ for i in os.listdir('data/leapGestRecog/00'):
 # print(lookup,"\n")
 # print(reverseLookup,"\n")
 
-#extract data
+#extract data from entire dataset
 xData = []
 yData = []
 dataCount = 0
-with alive_bar(10, title='Loading Data', bar='blocks') as bar:
+with alive_bar(10, title='Loading Data', bar='blocks') as bar: #progress bar
     for i in range(0, 10):
         for j in os.listdir('data/leapGestRecog/0' + str(i) + '/'):
             if not j.startswith('.'): #avoid hidden folders
@@ -46,13 +46,22 @@ with alive_bar(10, title='Loading Data', bar='blocks') as bar:
         sleep(0.02)            
         bar()
             
-xData = np.array(xData, dtype = 'float32')
+# xData = np.array(xData, dtype = 'float32')
 
-yData = np.array(yData)
-yData = yData.reshape(dataCount, 1) #reshape to be the correct size
+# yData = np.array(yData)
+# yData = yData.reshape(dataCount, 1) #reshape to be the correct size
 
 print("\nLoading Data Complete\n")
 
 #Save the data
-np.save('images.npy', xData)
-np.save('numerical_classifier.npy', yData)
+# print("Saving Data...\n")
+
+# np.save('images.npy', xData)
+# np.save('numerical_classifier.npy', yData)
+
+# print("Data Saved\n")
+
+#save the data count
+# with open('dataCount.txt', 'w') as f:
+#     f.write(str(dataCount))
+#     f.close()
