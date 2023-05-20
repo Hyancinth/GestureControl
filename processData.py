@@ -1,15 +1,12 @@
 import os
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-import cv2
 from PIL import Image
 
 from keras.utils import to_categorical
 
 gestures = {'L_': 'L',
            'fi': 'Fist',
-           'C_': 'C',
            'ok': 'Okay',
            'pe': 'Peace',
            'pa': 'Palm'
@@ -40,7 +37,7 @@ def traverseFileTree(path):
     yData = [] 
     for directory, subdirectories, files in os.walk(path):
         for file in files:
-            if (not file.startswith('.')) and (not file.startswith('C_')):
+            if (not file.startswith('.')):
                 path = os.path.join(directory, file)
                 gesture = gestures[file[0:2]]
                 img = processImage(path)
