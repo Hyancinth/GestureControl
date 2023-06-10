@@ -11,7 +11,7 @@ xData = np.load('xData.npy')
 yData = np.load('yData.npy')
 
 
-filePath =  './models/savedModel.h5' # Path to save model
+filePath =  './models/savedModelV6.h5' # Path to save model
  
 #Callbacks
 modelCheckpoint = ModelCheckpoint(filepath = filePath, save_best_only = True)
@@ -26,32 +26,63 @@ print("xTest shape:", xTest.shape)
 print("yTest shape:", yTest.shape)
 
 
-print("Sample xTrain data:")
-print(xTrain[0])  
+# print("Sample xTrain data:")
+# print(xTrain[0])  
 
-print("Sample yTrain data:")
-print(yTrain[0])  
+# print("Sample yTrain data:")
+# print(yTrain[0])  
 
-print("Sample xTest data:")
-print(xTest[0])  
+# print("Sample xTest data:")
+# print(xTest[0])  
 
-print("Sample yTest data:")
-print(yTest[0])  
+# print("Sample yTest data:")
+# print(yTest[0])  
 
 #Create model
 model = models.Sequential()
-model.add(layers.Conv2D(32, (5, 5), strides=(2, 2), activation='relu', input_shape=(224, 224,1)))
+model.add(layers.Conv2D(32, (3, 3), strides=(2, 2), activation='relu', input_shape=(224, 224,1)))
+model.add(layers.Conv2D(32, (3, 3), activation='relu'))
 model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(128, (3, 3), activation='relu'))
+model.add(layers.Conv2D(128, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(128, (3, 3), activation='relu'))
+model.add(layers.Conv2D(128, (3, 3), activation='relu'))
 model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Flatten())
 model.add(layers.Dense(128, activation='relu'))
 model.add(layers.Dense(128, activation='relu'))
-model.add(layers.Dense(128, activation='relu'))
-model.add(Dropout(0.25, seed=21))
+# model.add(Dropout(0.25, seed=21))
 model.add(layers.Dense(5, activation='softmax'))
+
+#VGG
+# model = models.Sequential()
+# model.add(layers.Conv2D(64, (3,3), strides = (1, 1), activation = 'relu', input_shape = (224, 224, 3)))
+# model.add(layers.Conv2D(64, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.MaxPooling2D((2,2)))
+# model.add(layers.Conv2D(128, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.Conv2D(128, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.MaxPooling2D((2,2)))
+# model.add(layers.Conv2D(256, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.Conv2D(256, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.Conv2D(256, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.MaxPooling2D((2,2)))
+# model.add(layers.Conv2D(512, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.Conv2D(512, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.Conv2D(512, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.MaxPooling2D((2,2)))
+# model.add(layers.Conv2D(512, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.Conv2D(512, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.Conv2D(512, (3,3), strides = (1, 1), activation = 'relu'))
+# model.add(layers.MaxPooling2D((2,2)))
+# model.add(layers.Flatten()) 
+# model.add(layers.Dense(4096, activation = 'relu'))
+# model.add(layers.Dense(4096, activation = 'relu'))
+# model.add(layers.Dense(5, activation = 'softmax')) #Only have 5 classes
+
 
 print(model.summary())
 
@@ -59,7 +90,7 @@ print("Compiling Model\n")
 model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
 print("Training Model\n")
-history = model.fit(xTrain, yTrain, epochs=200, batch_size=16, verbose=1, validation_data=(xTest, yTest), callbacks = [modelCheckpoint, earlyStopping])
+history = model.fit(xTrain, yTrain, epochs=100, batch_size=16, verbose=1, validation_data=(xTest, yTest), callbacks = [modelCheckpoint, earlyStopping])
 
 #Plot accuracy and loss
 plt.plot(history.history['accuracy'])
